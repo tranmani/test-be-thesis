@@ -5,15 +5,26 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def home():
-  dbconnection = sqlite3.connect("../test.db")
-  cursor = dbconnection.cursor()
-  cursor.execute("SELECT * FROM test")
-  data = cursor.fetchall()
+  try:
+    dbconnection = sqlite3.connect("../test.db")
+    cursor = dbconnection.cursor()
+    cursor.execute("SELECT * FROM test")
+    data = cursor.fetchall()
 
-  result = []
-  for x in range(10):
-    result.extend(data)
+    data2 = []
+    for row in data:
+      data2.append({"id": row[0], "name": row[1]})
 
-  return jsonify(result)
+    result = []
+    for x in range(10):
+      result.extend(data2)
 
-app.run(debug=True)
+    return jsonify(result)
+
+  except sqlite3.Error as error:
+    print('Error occured - ', error)
+    
+  finally:
+    dbconnection.close()
+
+app.run(debug=False)

@@ -4,11 +4,11 @@ import Database from "better-sqlite3";
 const hostname = "127.0.0.1";
 const port = 3000;
 
-const db = new Database("../test.db");
-const stm = db.prepare("SELECT * from test");
-
 const server = http.createServer((req, res) => {
   try {
+    const db = new Database("../test.db");
+    const stm = db.prepare("SELECT * from test");
+
     let data = [];
     for (let i = 0; i < 10; i++) {
       data.push(...stm.all());

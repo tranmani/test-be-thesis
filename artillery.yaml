@@ -3,10 +3,14 @@ config:
   phases:
     - duration: 30
       arrivalRate: 10
-    - duration: 30
-      arrivalRate: 15
-    - duration: 30
+      name: Warmup
+    - duration: 60
       arrivalRate: 10
+      rampTo: 30
+      name: Ramp up load
+    - duration: 60
+      arrivalRate: 30
+      name: Sustained load
 scenarios:
   - flow:
       - get:
