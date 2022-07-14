@@ -1,36 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"github.com/gofiber/fiber"
+	"testgo/test"
+	"github.com/gofiber/fiber/v2"
 )
 
-type User struct {
-	Id int
-	Name string
+func status(c *fiber.Ctx) error {
+	return c.SendString("Server is running! Send your request")
 }
 
 func setupRoutes(app *fiber.App) {
-	app.Get("/", test.Test)
-}
-
-func initDatabase() {
-	var err error
-	database.DBConn, err = gorm.Open("sqlite3", "test.db")
-	if err != nil {
-		panic("failed to connect database")
-	}
-	fmt.Println("Connection Opened to Database")
+	app.Get("/", test.GetAll)
 }
 
 func main() {
 	app := fiber.New()
-	initDatabase()
-
+	
 	setupRoutes(app)
-	app.Listen(10000)
-
-	defer database.DBConn.Close()
+	app.Listen(":7000")
 }

@@ -1,25 +1,15 @@
 package test
 
 import (
-	"fmt"
-
-	"github.com/elliotforbes/go-fiber-tutorial/database"
-	"github.com/gofiber/fiber"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"testgo/database"
+	"github.com/gofiber/fiber/v2"
 )
 
-type User struct {
-	gorm.Model
-	ID string `json:"id"`
-	Name  string `json:"name"`
-}
+func GetAll(c *fiber.Ctx) error {
+	result, err := database.GetAll()
+	if err != nil {
+		return c.Status(500).JSON(err)
+	}
 
-func Test(c *fiber.Ctx) {
-	db := database.DBConn
-	var data []User
-	
-	db.Find("Select * from test").Scan(&data)
-	
-	c.JSON(data)
+	return c.Status(200).JSON(result)
 }
